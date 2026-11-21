@@ -121,12 +121,29 @@ h1{margin:0 24px 12px;letter-spacing:.4px}
 .page{box-shadow:-8px 0 30px rgba(0,0,0,.14)}
 @media (min-width:500px){#app{border:11px solid #121214;box-shadow:0 0 0 2px #4a4a4e,0 0 0 4px #1d1d1f,0 40px 90px rgba(0,0,0,.35),inset 0 0 0 1px #000}
 #app::before{content:"9:41";position:absolute;top:19px;left:38px;z-index:50;font:600 16px/1 -apple-system,"SF Pro Text",sans-serif;color:var(--lb)}}
+:root{--lv1:#e4dbfb;--lv2:#f4f1fd;--lcard:rgba(255,255,255,.74);--lbar:rgba(238,232,252,.8)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--lv1:#000;--lv2:#000;--lcard:#1c1c1e;--lbar:rgba(0,0,0,.78)}}
+:root[data-theme="dark"]{--lv1:#000;--lv2:#000;--lcard:#1c1c1e;--lbar:rgba(0,0,0,.78)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lav .card{-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}:root:not([data-theme="light"]) .lav .in::before{border-top-color:rgba(84,84,88,.55)}:root:not([data-theme="light"]) .lav .seg{background:#1c1c1e}:root:not([data-theme="light"]) .lav .seg .on{background:#3a3a3c}}
+:root[data-theme="dark"] .lav .card{-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}:root[data-theme="dark"] .lav .in::before{border-top-color:rgba(84,84,88,.55)}:root[data-theme="dark"] .lav .seg{background:#1c1c1e}:root[data-theme="dark"] .lav .seg .on{background:#3a3a3c}
+.page.lav{background:radial-gradient(130% 50% at 50% 0,var(--lv1),transparent 72%),var(--lv2)}
+.lav .card{background:var(--lcard);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);border-radius:26px;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.55),0 8px 24px rgba(110,90,170,.08)}
+.lav .nav::before{background:var(--lbar)}
+.lav .t{max-width:74%}
+.lav .row:active{background:rgba(120,100,190,.12)}
+.lav .row{padding-left:20px}.lav .in{padding-right:20px}.lav .in::before{right:20px;border-top-color:rgba(60,60,67,.16)}
+.lav .foot{margin:-24px 34px 26px}.lav .hdr{margin:-20px 34px 8px}
+.lav .demo{margin:4px 34px 0;font-size:12px;opacity:.8}
+.lav .seg{background:rgba(255,255,255,.5)}.lav .seg .on{background:#fff}
+.lav .ch{padding:16px 20px}
+.cov .lb{color:#007aff;font-weight:400;text-decoration:none}
+.demo:empty{display:none}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-var D={name:"iPhone 18 Pro Max",modelName:"iPhone 18 Pro Max",cap:256,ios:"27.2.1"};var MODELNO="MXXX0VC/A",SERIAL="DEMO0018PMX";
+var D={name:"iPhone 18 Pro Max",modelName:"iPhone 18 Pro Max",cap:256,ios:"27.2.1"};var MODELNO="MODEL-MJW64LL/A",SERIAL="SERIE-JWPVHM73G9";
 var S=Object.assign({},D),AIR=false,busy=false,stack=[];
 var app=document.getElementById("app");
 var LAB={name:"Nombre",ios:"Versión de iOS"};
@@ -187,9 +204,9 @@ G(C.map(function(c){return '<div class="row" data-l="'+c[0]+'" data-go="generic:
 '<div class="foot">Distribución de demostración calculada a partir de la capacidad que elijas en Información.</div>'}},
 generic:function(n){return GENERIC(n)}
 };
-function build(e,prevTitle){var pg=PAGES[e.id](e.p);e.title=pg.t;var big=e.id==="main"?"Configuración":pg.t;
+function build(e,prevTitle){var pg=PAGES[e.id](e.p);e.title=pg.t;var L=e.id==="generic"&&(e.p==="Batería"||e.p==="Salud de la batería");e.el.classList.toggle("lav",L);var big=e.id==="main"?"Configuración":pg.t;
 var long=big.length>20&&e.id!=="main";
-e.el.innerHTML='<header class="nav">'+(e.id==="main"?"<span></span>":'<button class="back" data-back="1">'+BACKSVG+'<span>'+(prevTitle||"Atrás")+'</span></button>')+'<b class="t">'+pg.t+'</b><span></span></header><div class="body"><h1'+(long?' style="font-size:28px;line-height:34px"':"")+'>'+big+'</h1>'+pg.h+'<div class="demo">Réplica de demostración · datos ficticios</div></div>'}
+e.el.innerHTML='<header class="nav">'+(e.id==="main"?"<span></span>":'<button class="back" data-back="1">'+BACKSVG+'<span>'+(prevTitle||"Atrás")+'</span></button>')+'<b class="t">'+pg.t+'</b><span></span></header><div class="body"><h1'+(long?' style="font-size:28px;line-height:34px"':"")+'>'+big+'</h1>'+pg.h+'<div class="demo">'+(L?"Interfaz de demostración":e.id==="main"||e.p==="Datos móviles"?"":"Réplica de demostración · datos ficticios")+'</div></div>'}
 function refresh(skipTop){stack.forEach(function(e,i){if(skipTop&&i===stack.length-1)return;var s=e.el.scrollTop;build(e,i?stack[i-1].title:"");e.el.scrollTop=s;e.el.classList.toggle("sc",s>38)})}
 function push(id,p){if(busy)return;busy=true;var el=document.createElement("section");el.className="page"+(id!=="main"?" inl":"")+(stack.length?" in":"");
 el.addEventListener("scroll",function(){el.classList.toggle("sc",el.scrollTop>38)});
@@ -280,22 +297,22 @@ var GP={
 "Diccionario":[g("Diccionarios descargados",sw("d1","Español",1),sw("d2","English",0),sw("d3","Français",0))],
 "Gestión de VPN y dispositivo":[g("",sw("vpn","VPN",0),vl("Perfiles","Ninguno"),tx("No hay perfiles ni VPN configurados."))],
 "Transferir o restablecer el iPhone":[g("",bt("Restablecer ajustes de demostración","rst"),bt("Restablecer datos de demostración","rstD"),tx("Solo restablece esta réplica. No modifica los ajustes ni los datos reales del iPhone."))],
-"La cobertura venció":[g("",vl("Cobertura limitada","Vencida"),vl("AppleCare+","No activo"))],
+"Información de cobertura":[g("",vl("Estado de cobertura","No verificado")),g("",tx("Representación visual de ejemplo. No confirma ninguna garantía ni cobertura de Apple."))],
 "SEID":[g("",v2("SEID","DEMO-SEID-000000000001"))],
 "Config. certificados de confianza":[g("Certificados raíz",sw("ct1","Autoridad raíz demo A",1),sw("ct2","Autoridad raíz demo B",1),tx("Certificados ficticios de demostración."))],
-"Salud de la batería":[g("",vl("Capacidad máxima","99 %"),vl("Número de ciclos","38"),vl("Fecha de fabricación","agosto de 2026"),vl("Fecha de primer uso","25 de septiembre de 2026")),g("",sw("opt","Carga optimizada",1),tx("El iPhone aprende tu rutina de carga para reducir el desgaste de la batería.")),g("Límite de carga",rd("lim2",["80 %","85 %","90 %","95 %","100 %"],4)),g("",vl("Rendimiento máximo","Normal"),tx("Tu batería admite un rendimiento máximo normal."))],
+"Salud de la batería":[g("",vl("Capacidad máxima","100 %"),tx("Esta es una medición de la capacidad de la batería relativa a cuando era nueva. Una menor capacidad podría disminuir el tiempo de uso entre cada recarga.")),g("",vl("Número de ciclos","38"),tx("Este es el número de veces que el iPhone ha usado toda la capacidad de la batería.")),g("",vl("Fecha de fabricación","Agosto de 2026"),vl("Primer uso","25 de septiembre de 2026")),g("",sw("opt","Carga optimizada",1),tx("El iPhone aprende tu rutina de carga para reducir el desgaste de la batería.")),g("Límite de carga",rd("lim2",["80 %","85 %","90 %","95 %","100 %"],4)),g("",vl("Rendimiento máximo","Normal"),tx("Tu batería admite un rendimiento máximo normal."))],
 "Batería":function(){var lv=gv("lvl",82),s=gv("seg",0),col=gv("lowp",0)?"#ffd60a":lv<20?"#ff3b30":"#34c759";
 return '<div class="card ch"><div style="display:flex;align-items:center;justify-content:space-between"><div><h4>Nivel de carga</h4><b data-sv="lvl">'+lv+' %</b></div><div class="bt"><i class="bfill" style="width:'+lv+'%;background:'+col+'"></i></div></div></div>'+
-RG([g("",sw("pctb","Porcentaje de la batería",1),sw("lowp","Modo de bajo consumo",0),ln("Salud de la batería","99 %","generic:Salud de la batería"),sw("opt","Carga optimizada",1)),g("Demostración",sl("lvl","Ajustar nivel de carga",5,100,82," %"))])+
+RG([g("",sw("pctb","Porcentaje de la batería",1),sw("lowp","Modo de bajo consumo",0),ln("Salud de la batería","100 %","generic:Salud de la batería"),sw("opt","Carga optimizada",1)),g("Demostración",sl("lvl","Ajustar nivel de carga",5,100,82," %"))])+
 '<div class="seg"><div data-seg="0"'+(s?"":' class="on"')+'>Últimas 24 horas</div><div data-seg="1"'+(s?' class="on"':"")+'>Últimos 10 días</div></div><div id="bch">'+bchart()+'</div><div class="hdr">Uso por app</div><div class="card">'+BAPP.map(function(a){return '<div class="row st"><div class="in col"><div style="display:flex"><span class="lb">'+a[0]+'</span><span class="vl">'+a[1]+' %</span></div><div class="ubar"><i style="width:'+a[1]+'%"></i></div></div></div>'}).join("")+'</div>'}
 };
 var EX={"Fotos":function(){return g("",vl("Fotos",NPH),vl("Videos",NVID))},"Multimedia":function(){return g("",vl("Canciones","0"),vl("Podcasts","0"),vl("Libros","0"))},"iOS":function(){return g("",vl("Versión","iOS "+S.ios))},"Datos del sistema":function(){var z=CATS[4][2]*S.cap;return g("",vl("Cachés y registros",fmt(z*.6)+" GB"),vl("Otros datos del sistema",fmt(z*.4)+" GB"),tx("El sistema administra este espacio automáticamente."))},"Otros":function(){return g("",vl("Documentos y datos de apps",fmt(CATS[5][2]*S.cap)+" GB"))}};
 CATS.forEach(function(c){GP[c[0]]=function(){var z=c[2]*S.cap;if(c[0]==="Apps")return [g("",vl("Espacio usado por apps",fmt(z)+" GB"),vl("Apps instaladas",String(NAMES.length))),g.apply(null,["Apps por tamaño"].concat(apps().map(function(a){return vl(a[0],fmt(a[1])+" GB")})))];
 return [g("",vl("Espacio usado",fmt(z)+" GB"),vl("Del total",(c[2]*100).toFixed(1)+" %")),EX[c[0]]()]}});
-function GENERIC(n){var d=GP[n]||GP[n.replace(/[\u2010-\u2015]/g,"-")];if(typeof d==="function")d=d();return {t:n,h:typeof d==="string"?d:RG(d)}}
+function GENERIC(n){var d=GP[n]||GP[n.replace(/[\u2010-\u2015]/g,"-")];if(typeof d==="function")d=d();return {t:n==="Salud de la batería"?"Condición y recarga de la batería":n,h:typeof d==="string"?d:RG(d)}}
 PAGES.about=function(){var u=usedGB();return {t:"Información",h:RG([
 g("",ln("Nombre",S.name,"edit:name"),ln("Versión de iOS",S.ios,"edit:ios"),vl("Nombre del modelo",S.modelName),vl("Número de modelo",MODELNO),vl("Número de serie",SERIAL)),
-g("",ln("La cobertura venció","","generic:La cobertura venció")),
+g("",raw('<div class="row st"><div class="in col"><span class="lb" style="font-weight:600">Información de cobertura</span><span class="sub">Estado de cobertura: No verificado</span></div></div>'),raw(R({l:"Consultar opciones de AppleCare+",a:' data-go="generic:Información de cobertura"'}).replace('class="row"','class="row cov"'))),
 g("",vl("Canciones","0"),vl("Videos",NVID),vl("Fotos",NPH),vl("Apps",String(NAMES.length)),raw(R({l:"Capacidad",v:capLabel(S.cap),nc:1,a:' data-go="cap"'})),vl("Disponible",fmt(S.cap-u)+" GB")),
 g("",vl("Dirección Wi‑Fi",WIFI),vl("Bluetooth",BTMAC),vl("Firmware del módem","6.00.10"),ln("SEID","","generic:SEID"),v2("EID",EID),vl("Bloq. de operador","Sin restricción de SIM")),
 g("Tarjeta SIM física",vl("Red","Red demo"),vl("Operador","Operador 1.0"),vl("IMEI2","35 000000 000002 0"),vl("ICCID","8900000000000000001")),
